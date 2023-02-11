@@ -14,7 +14,7 @@ from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 #     openai_key = f.read().strip()
 # os.environ["OPENAI_API_KEY"] = openai_key
 
-@st.cache
+
 def get_docstore():
     with open("data/acn_homepage_faiss_store_1000_tokens.pickle", "rb") as f:
         store = pickle.load(f)
@@ -59,9 +59,9 @@ def init_chain():
 
 # format the result to markdown format
 def format_result_to_markdown(result: dict):
-    result_markdown = "# Source \n"
+    result_markdown = ""
     result_markdown += f"""
-# Answer
+**Answer**
 {result["output_text"].strip()}
     """
     for i, intermediate_step in enumerate(result["intermediate_steps"]):
