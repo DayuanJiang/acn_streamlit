@@ -9,7 +9,8 @@ import os
 from langchain import OpenAI
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.chains import VectorDBQAWithSourcesChain
-
+from langchain import FAISS
+from langchain.embeddings import OpenAIEmbeddings
 
 # if you have not set the OPENAI_API_KEY environment variable, you can set it here
 # with open("data/key.txt") as f:
@@ -18,8 +19,9 @@ from langchain.chains import VectorDBQAWithSourcesChain
 
 
 def get_docstore():
-    with open("data/acn_homepage_faiss_store_1000_tokens.pickle", "rb") as f:
-        store = pickle.load(f)
+    # with open("data/acn_homepage_faiss_store_1000_tokens.pickle", "rb") as f:
+    #     store = pickle.load(f)
+    store = FAISS.load_local("../model/data/acn_homepage_faiss_store_1000_tokens_orig", OpenAIEmbeddings())
     return store
 
 
