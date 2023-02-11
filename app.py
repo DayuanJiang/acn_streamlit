@@ -36,8 +36,8 @@ def init_chain():
     combine_prompt_template = """
     あなたは、アクセンチュアのAIアシスタントです。
     あなたには、以下のような長いドキュメントの抜粋部分と質問が与えられています。
-    提供されたテキストを参考して人間と会話するように答えてください。
-    提供されたテキストに根拠がない場合は、わからないと答えなさい。答えを捏造しないでください。
+    提供されたテキストを参考して答えてください。
+    提供されたテキストに根拠がない場合は、わからないと答えなさい。答えを作り上げないでください。
     =========
     テキスト：{summaries}
     =========
@@ -97,10 +97,12 @@ if __name__ == "__main__":
         if st.button("Submit"):
             try:
                 query = question.strip()
+                st.write(help(docsearch.index.search))
                 docs = docsearch.similarity_search(query, k=3)
                 result = chain(
                     {"input_documents": docs, "question": query},
                 )
+
                 answer_slot.markdown(format_result_to_markdown(result))
             except Exception as e:
                 st.write(e)
