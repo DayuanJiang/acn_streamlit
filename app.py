@@ -10,9 +10,9 @@ from langchain import OpenAI
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 
 
-with open("data/key.txt") as f:
-    openai_key = f.read().strip()
-os.environ["OPENAI_API_KEY"] = openai_key
+# with open("data/key.txt") as f:
+#     openai_key = f.read().strip()
+# os.environ["OPENAI_API_KEY"] = openai_key
 
 @st.cache
 def get_docstore():
