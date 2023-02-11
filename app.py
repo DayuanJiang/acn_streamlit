@@ -97,7 +97,10 @@ if __name__ == "__main__":
         if st.button("Submit"):
             try:
                 query = question.strip()
-                st.write(help(docsearch.index.search))
+                # st.write("len(docsearch):", len(docsearch))
+                # st.write("help(docsearch.index):", help(docsearch.index))
+                # st.write("help(docsearch.index.search):", help(docsearch.index.search))
+                st.write(len(docsearch.index_to_docstore_id))
                 docs = docsearch.similarity_search(query, k=3)
                 result = chain(
                     {"input_documents": docs, "question": query},
