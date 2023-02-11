@@ -8,8 +8,10 @@ import os
 
 from langchain import OpenAI
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+from langchain.chains import VectorDBQAWithSourcesChain
 
 
+# if you have not set the OPENAI_API_KEY environment variable, you can set it here
 # with open("data/key.txt") as f:
 #     openai_key = f.read().strip()
 # os.environ["OPENAI_API_KEY"] = openai_key
@@ -97,10 +99,6 @@ if __name__ == "__main__":
         if st.button("Submit"):
             try:
                 query = question.strip()
-                # st.write("len(docsearch):", len(docsearch))
-                # st.write("help(docsearch.index):", help(docsearch.index))
-                # st.write("help(docsearch.index.search):", help(docsearch.index.search))
-                st.write(len(docsearch.index_to_docstore_id))
                 docs = docsearch.similarity_search(query, k=3)
                 result = chain(
                     {"input_documents": docs, "question": query},
