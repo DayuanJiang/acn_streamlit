@@ -75,7 +75,7 @@ def format_result_to_markdown(result: dict):
 
 if __name__ == "__main__":
     st.title("ACN AIアシスタント(超爆速版※)")
-    st.subheader("質問に答えるために関連するテキストを検索します。")
+    st.subheader("ACN　HPをベースとしているため、HPにある内容のみ回答します。")
     st.text("※超爆速とは、開発スピードを指しています。Botの反応速度ではありません。")
     st.markdown(
         """
