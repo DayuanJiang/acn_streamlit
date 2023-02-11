@@ -21,7 +21,7 @@ from langchain.embeddings import OpenAIEmbeddings
 def get_docstore():
     # with open("data/acn_homepage_faiss_store_1000_tokens.pickle", "rb") as f:
     #     store = pickle.load(f)
-    store = FAISS.load_local("/data/acn_homepage_faiss_store_1000_tokens_orig", OpenAIEmbeddings())
+    store = FAISS.load_local("data/acn_homepage_faiss_store_1000_tokens_orig", OpenAIEmbeddings())
     return store
 
 
