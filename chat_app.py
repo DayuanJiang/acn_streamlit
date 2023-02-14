@@ -77,6 +77,20 @@ def init_chain():
     return chain
 
 if __name__ == "__main__":
+    st.title("ACN AIアシスタント(超爆速版※)")
+    st.subheader("ACN　HPをベースとしているため、HPにある内容のみ回答します。")
+    st.text("※超爆速とは、開発スピードを指しています。Botの反応速度ではありません。")
+    st.markdown(
+        """
+## 質問の例：
+- アクセンチュアのAIグループのリーダーは誰ですか？
+- アクセンチュアのCEOは誰ですか？
+- アクセンチュアの社長は誰ですか？
+- アクセンチュアの事業内容は？
+- アクセンチュアの事業所在地は？
+- アクセンチュア社員の有給は何日ありますか？
+        """
+    )
     query = st.text_input("User Input")
     vector_store = get_docstore()
     chain = init_chain()
