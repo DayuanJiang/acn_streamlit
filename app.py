@@ -39,7 +39,7 @@ def init_chain():
 
     combine_prompt_template = """
     あなたは、アクセンチュアのAIアシスタントです。
-    あなたには、以下のような長いドキュメントの抜粋部分と質問が与えられています。
+    あなたには、以下のような長いドキュメントの抜粋部分とアクセンチュアに関する質問が与えられています。
     提供されたテキストを参考して答えてください。
     提供されたテキストに根拠がない場合、もしくは全部なしの場合は、わからないと答えなさい。答えを作り上げないでください。
     =========
@@ -65,6 +65,7 @@ def init_chain():
 def format_result_to_markdown(result: dict):
     result_markdown = ""
     result_markdown += f"""
+**書き換えた後の質問**: {result["formatted_query"]}  
 **Answer**
 {result["output_text"].strip()}
     """
@@ -96,16 +97,32 @@ if __name__ == "__main__":
     chain = init_chain()
     question = st.text_input("質問を入力してください", "")
 
+    template = """
+    下記の質問をアクセンチェアに関する質問に書き換えてください。
+    質問: {question}
+    書き換えた質問:
+    """
+
+    query_temp = PromptTemplate(
+        template=template, input_variables=["question"]
+    )
+    
+    llm = OpenAI(temperature=0)
+    
+
+
     answer_slot = st.empty()
     with st.spinner("答案を検索中..."):
         if st.button("Submit"):
             try:
                 query = question.strip()
-                docs = docsearch.similarity_search(query, k=3)
+                formated_query_prompt = query_temp.format(question= query)
+                formated_query = llm(formated_query_prompt)
+                docs = docsearch.similarity_search(formated_query, k=3)
                 result = chain(
-                    {"input_documents": docs, "question": query},
+                    {"input_documents": docs, "question": formated_query},
                 )
-
+                result["formatted_query"] = formated_query
                 answer_slot.markdown(format_result_to_markdown(result))
             except Exception as e:
                 st.write(e)
