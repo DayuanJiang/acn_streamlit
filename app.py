@@ -27,27 +27,31 @@ def get_docstore():
 
 def init_chain():
     question_prompt_template = """長い文書の次の部分を使って、質問に答えるために関連するテキストがあるかどうかを確認します。
-    関連するテキストがあれば、そのテキストを返す。なかったら、「関連情報なし」と返してください。
-
-    {context}
-
-    質問: {question}
-    関連するテキスト:"""
+関連するテキストがあれば、文脈がわかるように関連しているテキストを返してください。
+なかったら、「関連情報なし」と返してください。
+====
+文章：
+{context}
+====
+質問: {question}
+====
+関連するテキスト:"""
     QUESTION_PROMPT = PromptTemplate(
         template=question_prompt_template, input_variables=["context", "question"]
     )
 
     combine_prompt_template = """
-    あなたは、アクセンチュアのAIアシスタントです。
-    あなたには、以下のような長いドキュメントの抜粋部分とアクセンチュアに関する質問が与えられています。
-    提供されたテキストを参考して答えてください。
-    提供されたテキストに根拠がない場合、もしくは全部なしの場合は、わからないと答えなさい。答えを作り上げないでください。
-    =========
-    テキスト：{summaries}
-    =========
-    質問: {question}
-    =========
-    答案:"""
+あなたは、アクセンチュアのAIアシスタントです。
+あなたには、以下のような長いドキュメントの抜粋部分とアクセンチュアに関する質問が与えられています。
+提供されたテキストを参考して答えてください。
+また、提供されたテキストに根拠がない場合、もしくは全部なしの場合は、わからないと答えなさい。答えを作り上げないでください。
+なお、質問には完全な文でお答えください。
+=========
+テキスト：{summaries}
+=========
+質問: {question}
+=========
+答案:"""
     COMBINE_PROMPT = PromptTemplate(
         template=combine_prompt_template, input_variables=["summaries", "question"]
     )
@@ -57,7 +61,7 @@ def init_chain():
                                     return_intermediate_steps=True, 
                                     question_prompt=QUESTION_PROMPT, 
                                     combine_prompt=COMBINE_PROMPT,
-                                    verbose=True
+                                    verbose=True,
                                     )
     return chain
 
@@ -108,8 +112,6 @@ if __name__ == "__main__":
     )
     
     llm = OpenAI(temperature=0)
-    
-
 
     answer_slot = st.empty()
     with st.spinner("答案を検索中..."):
